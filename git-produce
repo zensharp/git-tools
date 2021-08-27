@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+channel="${1}"
+if [ -z "$channel" ]
+then
+	echo "Usage: git produce <channel>"
+	exit 1
+fi
+
+set -eu
+
+git checkout master
+git checkout -B "$channel"
+git merge master --ff
+git push --set-upstream origin "$channel"
+git checkout master
