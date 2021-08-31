@@ -20,7 +20,7 @@ function checkout
 {
 	echo "[INFO] Attempting to reuse local production branch..."
 	git checkout $channel 2> /dev/null || return -1
-	echo "[INFO] Updating local production branch..."
+	echo "[INFO] Synchronizing local production branch..."
 	git merge --ff-only 2> /dev/null || true
 }
 
@@ -30,7 +30,7 @@ function create
 	git checkout -B $channel $master
 }
 
-echo "[INFO] Fetching origin..."
+echo "[INFO] Synchronizing repository..."
 update
 checkout || create
 echo "[INFO] Merging changes from $master..."
