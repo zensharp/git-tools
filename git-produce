@@ -21,7 +21,7 @@ function checkout
 	echo "[INFO] Attempting to reuse local production branch..."
 	git checkout $channel 2> /dev/null || return -1
 	echo "[INFO] Updating local production branch..."
-	git merge --ff-only || true
+	git merge --ff-only 2> /dev/null || true
 }
 
 function create
