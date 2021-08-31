@@ -34,7 +34,7 @@ echo "[INFO] Fetching origin..."
 update
 checkout || create
 echo "[INFO] Merging changes from $master..."
-git merge $master --ff
+git merge $master -m "Merge via git-produce" --ff
 echo "[INFO] Pushing changes to $remote..."
 git push --set-upstream $remote $channel
 echo "[INFO] Cleaning up..."
