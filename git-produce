@@ -8,9 +8,34 @@ then
 fi
 
 set -eu
+remote="origin"
+master="master"
 
-git checkout master
-git checkout -B "$channel"
-git merge master --ff
-git push --set-upstream origin "$channel"
-git checkout master
+function update
+{
+	git fetch $remote $channel 2> /dev/null || true
+}
+
+function checkout
+{
+	echo "[INFO] Attempting to reuse local production branch..."
+	git checkout $channel 2> /dev/null || return -1
+	echo "[INFO] Updating local production branch..."
+	git merge --ff-only || true
+}
+
+function create
+{
+	echo "[INFO] Creating local production branch..."
+	git checkout -B $channel $master
+}
+
+echo "[INFO] Fetching origin..."
+update
+checkout || create
+echo "[INFO] Merging changes from $master..."
+git merge $master --ff
+echo "[INFO] Pushing changes to $remote..."
+git push --set-upstream $remote $channel
+echo "[INFO] Cleaning up..."
+git checkout $master
