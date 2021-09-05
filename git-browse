@@ -2,10 +2,11 @@
 
 set -eu
 
+suffix=${1:-}
 url=$(git ls-remote --get-url origin)
 url="${url/git@github.com:/https:\/\/github.com\/}"
 url="${url/git@gitlab.com:/https:\/\/gitlab.com\/}"
 url="${url/git@bitbucket.org:/https:\/\/bitbucket.org\/}"
 url="${url%.git}"
 
-$BROWSER $url
+$BROWSER "$url/$suffix"
