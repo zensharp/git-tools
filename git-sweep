@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+set -eu
+
+# Configuration
+export mainBranch="master"
+
+# Begin script
+oldHead=$(git branch --show-current)
+
+git fetch
+git switch $mainBranch
+git merge --ff-only
+git feature prune
+
+git switch $oldHead 2> /dev/null || true

@@ -1,0 +1,85 @@
+#!/usr/bin/env bash
+
+set -eu
+
+# Configuration
+export remote="origin"
+export mainBranch="master"
+export head=$(git branch --show-current)
+
+# Functions
+function evalSafe
+{
+	if [ $dryRun = true ] ; then
+		echo "[DRY RUN] $1"
+	else
+		eval "$1"
+	fi
+}
+export -f evalSafe
+
+function switchBranch
+{
+	branchName=$1
+	startPoint=$mainBranch
+	evalSafe "git checkout -b $branchName $startPoint || git switch $branchName"
+}
+export -f switchBranch
+
+function deleteBranch
+{
+	branchName=$1
+	if [ "$branchName" == "$head" ]; then
+		evalSafe "git checkout $mainBranch"
+		echo "[INFO] The feature branch '$branchName' was checked out." 
+	fi
+	evalSafe "git branch -d $branchName"
+}
+export -f deleteBranch
+
+## Actions
+function start
+{
+	name=$1
+	switchBranch "$name-feature"
+}
+
+function drop
+{
+	name=$1
+	deleteBranch "$name-feature"
+}
+
+function prune
+{
+	git branch --format='%(refname:short)' --merged $remote/$mainBranch |
+		grep --invert-match "^$mainBranch$" |
+		xargs -I {} bash -c "deleteBranch '{}'"
+}
+
+# Begin script
+if [[ "$*" == *--dry-run* ]]
+then
+	export dryRun=true
+else
+	export dryRun=false
+fi
+
+verb=$1
+shift
+
+case "$verb" in
+	start)
+		start $@
+		;;
+	drop)
+		drop $@
+		;;
+	prune)
+		prune $@
+		;;
+	*)
+		echo "Invalid verb '$verb'"
+		exit 1
+		;;
+esac
