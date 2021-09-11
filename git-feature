@@ -53,7 +53,7 @@ function drop
 function prune
 {
 	git branch --format='%(refname:short)' --merged $remote/$mainBranch |
-		grep --invert-match "^$mainBranch$" |
+		grep "\-feature$" |
 		xargs -I {} bash -c "deleteBranch '{}'"
 }
 
