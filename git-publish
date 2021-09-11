@@ -8,10 +8,10 @@ do
 	value="$1"
 	case "$value" in
 		-c|--create)
-			args="$args --push-options merge_request.create"
+			args="$args --push-option merge_request.create"
 			;;
 		-a|--merge-when-pipeline-succeeds)
-			args="$args --push-options merge_request.merge_when_pipeline_succeeds"
+			args="$args --push-option merge_request.merge_when_pipeline_succeeds"
 			;;
 		*)
 			echo "$args $value"
