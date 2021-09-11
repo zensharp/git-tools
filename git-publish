@@ -2,10 +2,28 @@
 
 set -eu
 
-current=$(git branch --show-current)
-if [ -z "$current" ]; then
+args=""
+while test $# -gt 0
+do
+	value="$1"
+	case "$value" in
+		-c|--create)
+			args="$args --push-options merge_request.create"
+			;;
+		-a|--merge-when-pipeline-succeeds)
+			args="$args --push-options merge_request.merge_when_pipeline_succeeds"
+			;;
+		*)
+			echo "$args $value"
+			;;
+	esac
+	shift
+done
+
+head=$(git branch --show-current)
+if [ -z "$head" ]; then
 	echo "[Error] You are currently not on a branch. Aborting..."
 	exit 1
 fi
 
-git push --set-upstream origin $current
+git push --set-upstream origin $head $args
