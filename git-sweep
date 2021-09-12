@@ -8,7 +8,7 @@ export mainBranch="master"
 # Begin script
 oldHead=$(git branch --show-current)
 
-git fetch
+git fetch --prune
 git switch $mainBranch
 git merge --ff-only
 git feature prune
