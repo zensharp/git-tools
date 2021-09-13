@@ -14,7 +14,7 @@ do
 			args="$args --push-option merge_request.merge_when_pipeline_succeeds"
 			;;
 		*)
-			echo "$args $value"
+			args="$args $value"
 			;;
 	esac
 	shift
