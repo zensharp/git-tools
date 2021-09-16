@@ -41,19 +41,19 @@ export -f deleteBranch
 function start
 {
 	name=$1
-	switchBranch "$name-feature"
+	switchBranch "feature/$name"
 }
 
 function drop
 {
 	name=$1
-	deleteBranch "$name-feature"
+	deleteBranch "feature/$name"
 }
 
 function prune
 {
 	git branch --format='%(refname:short)' --merged $remote/$mainBranch |
-		grep "\-feature$" |
+		grep "^feature\/" |
 		xargs -I {} bash -c "deleteBranch '{}'"
 }
 
