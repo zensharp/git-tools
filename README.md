@@ -25,7 +25,7 @@ $ git feature drop x
 $ git feature prune
 ```
 
-> The feature branches will be created with the name `x-feature` where `x` is the name provided in `git feature start`.
+> The feature branches will be created with the name `feature/x` where `x` is the name provided in `git feature start`.
 
 ## Git Sweep (Experimental)
 * Synchronizes the local repository with the remote.
