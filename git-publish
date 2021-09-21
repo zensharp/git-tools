@@ -21,7 +21,8 @@ do
 done
 
 branch=$(git branch --show-current)
-if [ -z "$branch" ]; then
+if [ -z "$branch" ]
+then
 	echo "[Error] You are currently not on a branch. Aborting..."
 	exit 1
 fi
@@ -31,8 +32,9 @@ then
 	id=${branch#feature/}
 	title="Feature #$id"
 	description="Implements #$id"
-	args="$args --push-option merge_request.title=\'Feature #$id\'"
-	args="$args --push-option merge_request.title=\'Implements #$id\'"
+	args="$args --push-option merge_request.title=\"Feature #$id\""
+	args="$args --push-option merge_request.description=\"Implements #$id\""
 fi
 
-git push --set-upstream origin $branch $args
+command="git push --set-upstream origin $branch $args"
+eval $command
