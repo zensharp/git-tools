@@ -20,10 +20,19 @@ do
 	shift
 done
 
-head=$(git branch --show-current)
-if [ -z "$head" ]; then
+branch=$(git branch --show-current)
+if [ -z "$branch" ]; then
 	echo "[Error] You are currently not on a branch. Aborting..."
 	exit 1
 fi
 
-git push --set-upstream origin $head $args
+if echo $branch | grep -q '^feature/[[:digit:]]*$'
+then
+	id=${branch#feature/}
+	title="Feature #$id"
+	description="Implements #$id"
+	args="$args --push-option merge_request.title=\'Feature #$id\'"
+	args="$args --push-option merge_request.title=\'Implements #$id\'"
+fi
+
+git push --set-upstream origin $branch $args
