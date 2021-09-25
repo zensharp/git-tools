@@ -4,4 +4,4 @@ set -eu
 
 git add -A
 git commit -m "update"
-git push
+git push 2> /dev/null || git push --set-upstream origin "$(git branch --show-current)"
