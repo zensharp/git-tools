@@ -1,7 +1,4 @@
-# Installation
-1. Place these scripts in a persistent location.
-2. Add the location to `PATH`.
-
+# Overview
 ## Git Browse
 * Opens the repository in your default web browser. Note: only GitHub, GitLab, and BitBucket remotes are supported.
 
@@ -16,16 +13,28 @@
 	
 ## Git Publish
 * Pushes the branch to `origin` and sets up remote tracking.
+```
+$ git publish [-c|--create [-a|--merge-when-pipeline-succeeds]]
+```
+
+| Option | Description |
+| --- | --- |
+| `--create` | Creates a merge request for this branch. The merge request details are formatted to enable [automatic issue closing](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically). |
+| `--merge-when-pipeline-succeeds` | Automatically merges the merge request if the pipeline succeeds. |
+
+> See [GitLab push options](https://docs.gitlab.com/ee/user/project/push_options.html) for more information.
 
 ## Git Feature (Experimental)
 * Manages feature branches.
 ```
-$ git feature start x
-$ git feature drop x
+$ git feature start foo
+$ git feature drop foo
 $ git feature prune
 ```
 
-> The feature branches will be created with the name `feature/x` where `x` is the name provided in `git feature start`.
-
 ## Git Sweep (Experimental)
 * Synchronizes the local repository with the remote.
+
+# Installation
+1. Place these scripts in a persistent location.
+2. Add the location to `PATH`.
