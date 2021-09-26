@@ -27,13 +27,19 @@ then
 	exit 1
 fi
 
-if echo $branch | grep -q '^feature/[[:digit:]]*$'
+if echo $branch | grep -q '^feature/'
 then
-	id=${branch#feature/}
-	title="Feature #$id"
-	description="Implements #$id"
-	args="$args --push-option merge_request.title=\"Feature #$id\""
-	args="$args --push-option merge_request.description=\"Implements #$id\""
+	name=${branch#feature/}
+	if echo $name | grep -q '^[[:digit:]]*$'
+	then
+		title="Feature #$name"
+		description="Implements #$name"
+	else
+		title="Feature \"$name\""
+		description="Implements feature \"$name\""
+	fi
+	args="$args --push-option merge_request.title='$title'"
+	args="$args --push-option merge_request.description='$description'"
 fi
 
 command="git push --set-upstream origin $branch $args"
