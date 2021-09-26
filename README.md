@@ -19,8 +19,8 @@ $ git publish [-c|--create [-a|--merge-when-pipeline-succeeds]]
 
 | Option | Description |
 | --- | --- |
-| `--create` | Creates a merge request for this branch. The merge request details are formatted for [automatic issue closing](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically). |
-| `--merge-when-pipeline-succeeds` | Automatically merges the merge request if the pipeline succeeds. |
+| `create` | Creates a merge request for this branch. The merge request details are formatted for [automatic issue closing](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically). |
+| `merge-when-pipeline-succeeds` | Automatically merges the merge request if the pipeline succeeds. |
 
 > See [GitLab push options](https://docs.gitlab.com/ee/user/project/push_options.html) for more information.
 
