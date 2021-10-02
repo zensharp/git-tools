@@ -37,6 +37,24 @@ function deleteBranch
 }
 export -f deleteBranch
 
+function parseFeatureName
+{
+	name=$1
+	if echo $name | grep -q '^feature/'
+	then
+		name=${name#feature/}
+		if echo $name | grep -q '^[[:digit:]]*$'
+		then
+			name="#$name"
+		else
+			name="\"$name\""
+		fi
+	fi
+
+	echo $name
+}
+export -f parseFeatureName
+
 ## Actions
 function start
 {
@@ -55,6 +73,34 @@ function prune
 	git branch --format='%(refname:short)' --merged $remote/$mainBranch |
 		grep "^feature\/" |
 		xargs -I {} bash -c "deleteBranch '{}'"
+}
+
+function commit
+{
+	template=$(mktemp -t git-feature_XXXXXXXX)
+	export template
+
+	function run
+	{
+		branch=$(git branch --show-current)
+		name=$(parseFeatureName $branch)
+		cat > $template << EOL
+
+
+implements feature $name
+EOL
+
+		git commit --template $template
+	}
+
+	function cleanup
+	{
+		exitCode=$?
+		rm -rf template 2> /dev/null
+		exit $exitCode
+	}
+
+	run && cleanup || cleanup
 }
 
 # Begin script
@@ -77,6 +123,9 @@ case "$verb" in
 		;;
 	prune)
 		prune $@
+		;;
+	commit)
+		commit $@
 		;;
 	*)
 		echo "Invalid verb '$verb'"
