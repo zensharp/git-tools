@@ -2,45 +2,60 @@
 
 set -eu
 
+branch=$(git branch --show-current)
 args=""
+
+# Functions
+function addArgument
+{
+	args="$args $@"
+}
+
+function getMergeRequestDetails
+{
+	if [ -z "$branch" ]
+	then
+		echo "[Error] You are currently not on a branch. Aborting..."
+		exit 1
+	fi
+
+	temp="--push-option merge_request.create"
+	if echo $branch | grep -q '^feature/'
+	then
+		name=${branch#feature/}
+		if echo $name | grep -q '^[[:digit:]]*$'
+		then
+			title="Feature #$name"
+			description="Implements #$name"
+		else
+			title="Feature \"$name\""
+			description="Implements feature \"$name\""
+		fi
+		temp="$temp --push-option merge_request.title='$title'"
+		temp="$temp --push-option merge_request.description='$description'"
+	fi
+
+	echo $temp
+}
+
+# Begin script
 while test $# -gt 0
 do
 	value="$1"
 	case "$value" in
 		-c|--create)
-			args="$args --push-option merge_request.create"
+			addArgument $(getMergeRequestDetails)
 			;;
 		-a|--merge-when-pipeline-succeeds)
-			args="$args --push-option merge_request.merge_when_pipeline_succeeds"
+			addArgument "--push-option merge_request.merge_when_pipeline_succeeds"
 			;;
 		*)
-			args="$args $value"
+			addArgument "$value"
 			;;
 	esac
 	shift
 done
 
-branch=$(git branch --show-current)
-if [ -z "$branch" ]
-then
-	echo "[Error] You are currently not on a branch. Aborting..."
-	exit 1
-fi
-
-if echo $branch | grep -q '^feature/'
-then
-	name=${branch#feature/}
-	if echo $name | grep -q '^[[:digit:]]*$'
-	then
-		title="Feature #$name"
-		description="Implements #$name"
-	else
-		title="Feature \"$name\""
-		description="Implements feature \"$name\""
-	fi
-	args="$args --push-option merge_request.title='$title'"
-	args="$args --push-option merge_request.description='$description'"
-fi
-
 command="git push --set-upstream origin $branch $args"
-eval $command
+echo $command
+#eval $command
