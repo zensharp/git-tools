@@ -47,7 +47,7 @@ function parseFeatureName
 		then
 			name="#$name"
 		else
-			name="\"$name\""
+			name="feature \"$name\""
 		fi
 	fi
 
@@ -87,7 +87,7 @@ function commit
 		cat > $template << EOL
 
 
-implements feature $name
+implementing $name
 EOL
 
 		git commit --template $template
