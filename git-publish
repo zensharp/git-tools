@@ -57,5 +57,4 @@ do
 done
 
 command="git push --set-upstream origin $branch $args"
-echo $command
-#eval $command
+eval $command
