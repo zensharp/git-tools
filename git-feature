@@ -21,7 +21,7 @@ export -f evalSafe
 function switchBranch
 {
 	branchName=$1
-	startPoint=$mainBranch
+	startPoint=${2:-$mainBranch}
 	evalSafe "git checkout -b $branchName $startPoint || git switch $branchName"
 }
 export -f switchBranch
@@ -59,7 +59,8 @@ export -f parseFeatureName
 function start
 {
 	name=$1
-	switchBranch "feature/$name"
+	startPoint=$2
+	switchBranch "feature/$name" "$startPoint"
 }
 
 function drop
