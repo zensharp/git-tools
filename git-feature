@@ -21,7 +21,7 @@ export -f evalSafe
 function switchBranch
 {
 	branchName=$1
-	startPoint=${2:-$mainBranch}
+	startPoint=$mainBranch
 	evalSafe "git checkout -b $branchName $startPoint || git switch $branchName"
 }
 export -f switchBranch
