@@ -59,7 +59,7 @@ export -f parseFeatureName
 function start
 {
 	name=$1
-	startPoint=$2
+	startPoint=$mainBranch
 	switchBranch "feature/$name" "$startPoint"
 }
 
