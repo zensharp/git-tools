@@ -1,0 +1,57 @@
+#!/usr/bin/env dotnet-script
+
+#r "nuget: CliWrap, 3.3.3"
+
+using CliWrap;
+using System;
+using System.IO;
+using System.Text.RegularExpressions;
+
+var remote = Args[0];
+remote = await ResolveGitURL(remote);
+var path = GetCanonicalPath(remote);
+Console.WriteLine($"Cloning into {path}...");
+await Git($"clone {remote} {path}");
+
+async Task<string> ResolveGitURL(string url)
+{
+	var result = await Git($"ls-remote --get-url {url}");
+	return result.Trim();
+}
+
+string GetCanonicalPath(string url)
+{
+	var reposHome = Environment.GetEnvironmentVariable("XDG_REPOS_HOME");
+	if (string.IsNullOrWhiteSpace(reposHome))
+	{
+		var userProfileDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+		reposHome = Path.Combine(userProfileDirectory, "repos");
+	}
+	var regex = new Regex(@"((https?://)|(git@))(?<hostname>[^/:]+)(/|:)(?<namespace>.+)");
+	var match = regex.Match(url);
+
+	var hostname = match.Groups["hostname"].Value;
+	hostname = Regex.Match(hostname, @"^[^\.]+").Value;
+	var gitPath = match.Groups["namespace"].Value;
+	var gitDirectory = Path.GetDirectoryName(gitPath);
+	var gitFile = Path.GetFileNameWithoutExtension(gitPath);
+	return Path.Combine(reposHome, hostname, gitDirectory, gitFile);
+}
+
+async Task<string> Git(string arguments, bool dryRun = false)
+{
+	var stdOutBuffer = new StringBuilder();
+	var cmd = Cli.Wrap("git")
+		.WithArguments(arguments)
+		.WithStandardOutputPipe(PipeTarget.ToStringBuilder(stdOutBuffer));
+	if (dryRun)
+	{
+		Console.WriteLine(cmd);
+	}
+	else
+	{
+		await cmd.ExecuteAsync();
+	}
+
+	return stdOutBuffer.ToString();
+}
