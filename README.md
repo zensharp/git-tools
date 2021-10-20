@@ -47,8 +47,7 @@ For example, running `git repo https://gitlab.com/group/subgroup/project.git` wo
 </details>
 
 ### Advanced Setup
-	* If environment variable `XDG_REPOS_HOME` is set, the repository is cloned to `XDG_REPOS_HOME`.
-	* Otherwise, the repository is cloned to `~/repos`.
+If environment variable `XDG_REPOS_HOME` is set, the repository is cloned to `XDG_REPOS_HOME`. Otherwise, the repository is cloned to `~/repos`.
 
 > More on `XDG` environment variables [here](https://specifications.freedesktop.org/basedir-spec/latest/ar01s03.html)
 
