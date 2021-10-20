@@ -35,6 +35,33 @@ $ git feature prune
 ## Git Sweep (Experimental)
 * Synchronizes the local repository with the remote.
 
+## Git Repo
+* Clones the repository to a predictable location.
+
+For example, running `git repo https://gitlab.com/group/subgroup/project.git` would clone the repository to `~/repos/gitlab/group/subgroup/project`.
+
+<details>
+  <summary>FAQ: Why isn't the path shortened?</summary>
+  
+  Git can be configured to apply different settings depending on the path to the repository (see [gitconfig conditional includes](https://git-scm.com/docs/git-config#_conditional_includes)). By keeping the full path, `gitconfig` can determine which settings to apply.
+	
+  For example:
+  ```
+  [includeIf "gitdir:**/FangCompany/**"]
+        path = ~/work.gitconfig
+  [includeIf "gitdir:**/MyPersonalCompany/**"]
+        path = ~/home.gitconfig
+  ```
+</details>
+
+---
+
+### Advanced Setup
+	* If environment variable `XDG_REPOS_HOME` is set, the repository is cloned to `XDG_REPOS_HOME`.
+	* Otherwise, the repository is cloned to `~/repos`.
+
+> More on `XDG` environment variables [here](https://specifications.freedesktop.org/basedir-spec/latest/ar01s03.html)
+
 # Installation
 1. Place these scripts in a persistent location.
 2. Add the location to `PATH`.
