@@ -21,7 +21,7 @@ async Task<string> ResolveGitURL(string url)
 
 string GetCanonicalPath(string url)
 {
-	var reposHome = Environment.GetEnvironmentVariable("XDG_REPOS_HOME");
+	var reposHome = Environment.GetEnvironmentVariable("XDG_REPOS_DIR");
 	if (string.IsNullOrWhiteSpace(reposHome))
 	{
 		var userProfileDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
