@@ -1,3 +1,45 @@
-#!/usr/bin/env bash
+#!/usr/bin/env dotnet-script
 
-find ~+ -name '.git' -type d | sed 's|/.git||g' | sort
+var searchRoot = Args.Count >= 1 ? Args[0] : ".";
+
+var colors = new List<ConsoleColor>
+{
+	ConsoleColor.White,
+	ConsoleColor.Gray,
+};
+
+var workspaces = Search(searchRoot)
+	.Select(x => Path.GetRelativePath(searchRoot, x))
+	.ToList();
+var organizations = workspaces.GroupBy(x => Path.GetDirectoryName(x));
+
+int colorIndex = -1;
+foreach (var organization in organizations)
+{
+	Console.ForegroundColor = colors[++colorIndex % colors.Count];
+	foreach (var workspace in organization)
+	{
+		Console.WriteLine(workspace);
+	}
+	Console.ResetColor();
+}
+
+IEnumerable<string> Search(string directory)
+{
+	var git = Path.Combine(directory, ".git");
+	if (Directory.Exists(git))
+	{
+		yield return directory;
+	}
+	else
+	{
+		foreach (var child in Directory.EnumerateDirectories(directory, "*", SearchOption.TopDirectoryOnly))
+		{
+			foreach (var match in Search(child))
+			{
+				yield return match;
+			}
+		}
+	}
+}
+
