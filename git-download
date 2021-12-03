@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+set -eu
+
+destination=$XDG_DOWNLOAD_DIR
+
+cd $destination
+eval "git clone $*"
