@@ -7,10 +7,13 @@ Note: only GitHub, GitLab, and BitBucket remotes are supported
 > The environment variable `BROWSER` must be set.
 
 ## Git Is
-*Print whether the current directory is in a git repository*
+*Prints whether the current directory is in a git repository*
 
 ## Git Lazy
 *Commits and pushes all modified + untracked files*
+
+## Git List
+*Prints all git repositories in the current directory (and all child directories)*
 
 ## Git Produce
 *Creates (or updates) a production branch from master, then pushes the branch*
