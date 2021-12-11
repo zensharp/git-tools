@@ -2,30 +2,20 @@
 
 var searchRoot = Args.Count >= 1 ? Args[0] : ".";
 
-var workspaces = Search(searchRoot)
-	.Select(x => Path.GetRelativePath(searchRoot, x));
+Search(searchRoot);
 
-foreach (var workspace in workspaces)
-{
-	Console.WriteLine(workspace);
-}
-
-IEnumerable<string> Search(string directory)
+void Search(string directory)
 {
 	var git = Path.Combine(directory, ".git");
 	if (Directory.Exists(git))
 	{
-		yield return directory;
+		Console.WriteLine(Path.GetRelativePath(searchRoot, directory));
 	}
 	else
 	{
 		foreach (var child in Directory.EnumerateDirectories(directory, "*", SearchOption.TopDirectoryOnly))
 		{
-			foreach (var match in Search(child))
-			{
-				yield return match;
-			}
+			Search(child);
 		}
 	}
 }
-
