@@ -2,26 +2,12 @@
 
 var searchRoot = Args.Count >= 1 ? Args[0] : ".";
 
-var colors = new List<ConsoleColor>
-{
-	ConsoleColor.White,
-	ConsoleColor.Gray,
-};
-
 var workspaces = Search(searchRoot)
-	.Select(x => Path.GetRelativePath(searchRoot, x))
-	.ToList();
-var organizations = workspaces.GroupBy(x => Path.GetDirectoryName(x));
+	.Select(x => Path.GetRelativePath(searchRoot, x));
 
-int colorIndex = -1;
-foreach (var organization in organizations)
+foreach (var workspace in workspaces)
 {
-	Console.ForegroundColor = colors[++colorIndex % colors.Count];
-	foreach (var workspace in organization)
-	{
-		Console.WriteLine(workspace);
-	}
-	Console.ResetColor();
+	Console.WriteLine(workspace);
 }
 
 IEnumerable<string> Search(string directory)
