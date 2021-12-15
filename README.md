@@ -1,4 +1,15 @@
 # Overview
+*Git utility scripts*
+
+# Installation
+1. Place these scripts in a persistent location.
+2. Add the location to `PATH`.
+
+```
+mkdir -p ~/.local/bin; \
+    git clone https://AndrewMJordan/git-tools 
+```
+
 ## Git Browse
 *Opens the repository in your default web browser*
 
@@ -69,8 +80,3 @@ $ git feature prune
 
 ## Git Sweep (Experimental)
 *Synchronizes the local repository with the remote*
-
-
-# Installation
-1. Place these scripts in a persistent location.
-2. Add the location to `PATH`.
