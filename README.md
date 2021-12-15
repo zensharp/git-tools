@@ -7,7 +7,7 @@
 
 ```
 mkdir -p ~/.local/bin; \
-    git clone https://github.com/AndrewMJordan/git-tools; \
+    git clone https://github.com/AndrewMJordan/git-tools ~/.local/bin/git-tools; \
     export PATH="$PATH:$HOME/.local/bin/git-tools";
 ```
 
