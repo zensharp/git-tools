@@ -2,8 +2,7 @@
 
 set -eu
 
-#VERSION=$(git describe --abbrev=0 --tags)
-version="v1.2.3"
+version=$(git tag -l --sort=-v:refname | head -n 1)
 version="${version/v/}"
 versionArray=(${version//./ })
 major=${versionArray[0]}
@@ -34,3 +33,4 @@ esac
 
 TAG="v$major.$minor.$patch"
 eval "git tag $TAG"
+echo "Created tag '$TAG'"
