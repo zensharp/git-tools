@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+set -eu
+
+#VERSION=$(git describe --abbrev=0 --tags)
+version="v1.2.3"
+version="${version/v/}"
+versionArray=(${version//./ })
+major=${versionArray[0]}
+minor=${versionArray[1]}
+patch=${versionArray[2]}
+
+digit=$1
+shift
+case "$digit" in
+	major)
+		major=$((major+1))
+		minor=0
+		patch=0
+		;;
+	minor)
+		minor=$((minor+1))
+		patch=0
+		;;
+	patch)
+		patch=$((patch+1))
+		;;
+	*)
+		echo "Usage:"
+		echo "	git bump [major | minor | patch]"
+		exit -1
+		;;
+esac
+
+TAG="v$major.$minor.$patch"
+eval "git tag $TAG"
