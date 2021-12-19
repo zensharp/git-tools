@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+root=$(git root)
+echo "$1" >> $root/.git/info/exclude
