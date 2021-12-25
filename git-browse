@@ -20,4 +20,4 @@ else
 	url="https://${url}"
 fi
 
-$BROWSER "$url/$suffix"
+eval "$BROWSER $url/$suffix"
