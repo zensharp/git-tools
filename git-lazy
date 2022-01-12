@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-set -eu
+set -e
 
+message="${1:-update}"
 git add -A
-git commit -m "update"
-git push 2> /dev/null || git push --set-upstream origin "$(git branch --show-current)"
+git commit -m "$message"
