@@ -8,7 +8,7 @@ function visit
 	
 	if [ -d "$dir/.git" ]
 	then
-		realpath "$dir" --relative-to "$PWD"
+		realpath "$dir" --relative-to "$(realpath .)"
 		return 0
 	fi
 
