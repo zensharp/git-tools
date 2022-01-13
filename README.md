@@ -22,7 +22,7 @@ Note: only GitHub, GitLab, and BitBucket remotes are supported
 *Prints whether the current directory is in a git repository*
 
 ## Git Lazy
-*Commits and pushes all modified + untracked files*
+*Commits all modified + untracked files*
 
 ## Git List
 *Prints all git repositories in the current directory (and all child directories)*
@@ -45,7 +45,7 @@ $ git publish [-c|--create [-a|--merge-when-pipeline-succeeds]]
 
 > See [GitLab push options](https://docs.gitlab.com/ee/user/project/push_options.html) for more information.
 
-## Git Repo
+## Git Deposit
 *Clones a repository to a fixed location*
 
 For example, running `git repo https://gitlab.com/group/subgroup/project.git` would clone the repository to `~/repos/gitlab/group/subgroup/project`.
@@ -68,6 +68,9 @@ For example, running `git repo https://gitlab.com/group/subgroup/project.git` wo
 If environment variable `XDG_REPOS_HOME` is set, the repository is cloned to `XDG_REPOS_HOME`. Otherwise, the repository is cloned to `~/repos`.
 
 > More on `XDG` environment variables [here](https://specifications.freedesktop.org/basedir-spec/latest/ar01s03.html)
+
+## Git Who Am I
+*Prints git-related user information based on the current directory*
 
 ## Git Feature (Experimental)
 *Manages feature branches*
