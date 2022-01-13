@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+set -e
+shopt -s extglob
+
+remote=${1}
+reposDir="${XDG_REPOS_DIR:-$HOME/repos}"
+
+path=$(git ls-remote --get-url ${remote})
+path="${path/@(git@|https:\/\/)/}"
+path="${path/\.@(com|org)[:\/]//}"
+path="${path%.git}"
+path=$reposDir/$path
+
+git clone $remote $path
+
+GREEN='\033[0;32m'
+NC='\033[0m'
+echo -e "$GREEN$path$NC"
