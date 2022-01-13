@@ -48,7 +48,7 @@ $ git publish [-c|--create [-a|--merge-when-pipeline-succeeds]]
 ## Git Deposit
 *Clones a repository to a fixed location*
 
-For example, running `git repo https://gitlab.com/group/subgroup/project.git` would clone the repository to `~/repos/gitlab/group/subgroup/project`.
+For example, running `git deposit https://gitlab.com/group/subgroup/project.git` would clone the repository to `~/repos/gitlab/group/subgroup/project`.
 
 <details>
   <summary>FAQ: Why isn't the path shortened?</summary>
