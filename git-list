@@ -1,21 +1,24 @@
-#!/usr/bin/env dotnet-script
+#!/usr/bin/env bash
 
-var searchRoot = Args.Count >= 1 ? Args[0] : ".";
+searchRoot=${1:-.}
 
-Search(searchRoot);
-
-void Search(string directory)
+function visit
 {
-	var git = Path.Combine(directory, ".git");
-	if (Directory.Exists(git))
-	{
-		Console.WriteLine(Path.GetRelativePath(searchRoot, directory));
-	}
-	else
-	{
-		foreach (var child in Directory.EnumerateDirectories(directory, "*", SearchOption.TopDirectoryOnly))
-		{
-			Search(child);
-		}
-	}
+	dir=$1
+	
+	if [ -d "$dir/.git" ]
+	then
+		realpath $dir --relative-to $searchRoot
+		return 0
+	fi
+
+	for x in $dir/*
+	do
+	    if [ -d "$x" ]
+	    then
+	    	visit "$x"
+	    fi
+	done
 }
+
+visit "$searchRoot"
