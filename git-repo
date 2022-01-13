@@ -10,8 +10,11 @@ using System.Text.RegularExpressions;
 var remote = Args[0];
 remote = await ResolveGitURL(remote);
 var path = GetCanonicalPath(remote);
-Console.WriteLine($"Cloning into {path}...");
 await Git($"clone {remote} {path}");
+Console.ForegroundColor = ConsoleColor.Green;
+Console.WriteLine($"Cloned into:")
+Console.WriteLine($"{path}");
+Console.ResetColor();
 
 async Task<string> ResolveGitURL(string url)
 {
