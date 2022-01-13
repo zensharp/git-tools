@@ -12,7 +12,7 @@ remote = await ResolveGitURL(remote);
 var path = GetCanonicalPath(remote);
 await Git($"clone {remote} {path}");
 Console.ForegroundColor = ConsoleColor.Green;
-Console.WriteLine($"Cloned into:")
+Console.WriteLine($"Cloned into:");
 Console.WriteLine($"{path}");
 Console.ResetColor();
 
