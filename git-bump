@@ -1,15 +1,23 @@
 #!/usr/bin/env bash
 
-set -eu
-
-version=$(git tag -l --sort=-v:refname | head -n 1)
-version="${version/v/}"
-versionArray=(${version//./ })
-major=${versionArray[0]}
-minor=${versionArray[1]}
-patch=${versionArray[2]}
+set -e
 
 digit=$1
+
+if [ $digit == "init" ]
+then
+	major=0
+	minor=0
+	patch=0
+else
+	version=$(git tag -l --sort=-v:refname | head -n 1)
+	version="${version/v/}"
+	versionArray=(${version//./ })
+	major=${versionArray[0]}
+	minor=${versionArray[1]}
+	patch=${versionArray[2]}
+fi
+
 shift
 case "$digit" in
 	major)
@@ -24,9 +32,14 @@ case "$digit" in
 	patch)
 		patch=$((patch+1))
 		;;
+	init)
+		major=0
+		minor=1
+		patch=0
+		;;
 	*)
 		echo "Usage:"
-		echo "	git bump [major | minor | patch]"
+		echo "	git bump [major | minor | patch | init]"
 		exit -1
 		;;
 esac
