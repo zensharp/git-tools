@@ -2,6 +2,20 @@
 
 set -e
 
-message="${1:-update}"
+# Create file list
+msg=$(git ls-files -m -o --exclude-standard)
+msg=$(echo "$msg" | sed -z 's/\n/, /g')
+msg=${msg%, }
+msg="update $msg"
+
+# Truncate
+if [[ ${#msg} -gt 80 ]]
+then
+	msg=$(echo $msg | cut -c -77)
+	msg="$msg..."
+fi
+
+# Execute
+msg="${1:-$msg}"
 git add -A
-git commit -m "$message"
+git commit -m "$msg"
