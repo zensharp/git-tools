@@ -3,10 +3,14 @@
 set -e
 
 # Create file list
-msg=$(git ls-files -m -o --exclude-standard)
-msg=$(echo "$msg" | sed -z 's/\n/, /g')
-msg=${msg%, }
-msg="update $msg"
+list=""
+for file in $(git ls-files -m -o --exclude-standard)
+{
+	list="$list, $(basename $file)"
+}
+list=${list#, }
+echo $list
+msg="update $list"
 
 # Truncate
 if [[ ${#msg} -gt 80 ]]
@@ -17,5 +21,6 @@ fi
 
 # Execute
 msg="${1:-$msg}"
+
 git add -A
 git commit -m "$msg"
