@@ -9,7 +9,6 @@ for file in $(git ls-files -m -o --exclude-standard)
 	list="$list, $(basename $file)"
 }
 list=${list#, }
-echo $list
 msg="update $list"
 
 # Truncate
