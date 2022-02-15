@@ -2,6 +2,8 @@
 
 set -e
 
+cd $(git root)
+
 # Create file list
 list=""
 for file in $(git ls-files -m -o --exclude-standard)
