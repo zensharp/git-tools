@@ -6,10 +6,13 @@ cd $(git root)
 
 # Create file list
 list=""
+IFS.BACKUP=$IFS
+IFS=$'\n'
 for file in $(git ls-files -m -o --exclude-standard)
 {
 	list="$list, \"$(basename $file)\""
 }
+IFS=$IFS.BACKUP
 list=${list#, }
 msg="update $list"
 
