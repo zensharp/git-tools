@@ -8,7 +8,7 @@ cd $(git root)
 list=""
 for file in $(git ls-files -m -o --exclude-standard)
 {
-	list="$list, $(basename $file)"
+	list="$list, '$(basename $file)'"
 }
 list=${list#, }
 msg="update $list"
