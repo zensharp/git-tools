@@ -2,15 +2,11 @@
 
 set -eu
 
-# Configuration
-export mainBranch="master"
-
 # Begin script
 oldHead=$(git branch --show-current)
 
-git fetch --prune
-git switch $mainBranch
-git merge --ff-only
+git fetch --prune origin master:master
+git switch master
 git feature prune
 
 git switch $oldHead 2> /dev/null || true
