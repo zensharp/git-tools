@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+version=$(git tag -l --sort=-v:refname | head -n 1)
+version=${version/v/}
+echo "v$version"
