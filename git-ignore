@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
 root=$(git root)
+target=$(realpath "$1")
+
+line=$(realpath --relative-to "$root" "$target")
+
 mkdir -p $root/.git/info
-echo "$1" >> $root/.git/info/exclude
+echo "$line" >> $root/.git/info/exclude
