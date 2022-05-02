@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -eu
+
+url=$(git ls-remote --get-url origin)
+url="${url/git@github.com:/https:\/\/github.com\/}"
+url="${url/git@gitlab.com:/https:\/\/gitlab.com\/}"
+url="${url/git@bitbucket.org:/https:\/\/bitbucket.org\/}"
+url="${url%.git}"
+
+eval "$BROWSER https://gitpod.io#$url"
