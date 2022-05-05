@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+set -eu
+
+if $(git is)
+then
+	url=$(git ls-remote --get-url origin)
+	url="${url/git@github.com:/https:\/\/github.com\/}"
+	url="${url/git@gitlab.com:/https:\/\/gitlab.com\/}"
+	url="${url/git@bitbucket.org:/https:\/\/bitbucket.org\/}"
+	url="${url%.git}"
+else
+	url="$(pwd)"
+	url="${url/*\/repos\//}"
+	url="${url/github\//github.com\/}"
+	url="${url/gitlab\//gitlab.com\/}"
+	url="${url/bitbucket\//bitbucket.org\/}"
+	url="https://${url}"
+fi
+
+echo $url
