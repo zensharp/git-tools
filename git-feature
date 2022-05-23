@@ -102,6 +102,11 @@ EOL
 	run && cleanup || cleanup
 }
 
+function status
+{
+	git diff --name-status $(git merge-base HEAD master)
+}
+
 # Begin script
 if [[ "$*" == *--dry-run* ]]
 then
@@ -125,6 +130,9 @@ case "$verb" in
 		;;
 	commit)
 		commit $@
+		;;
+	status)
+		status $@
 		;;
 	*)
 		echo "Invalid verb '$verb'"
