@@ -7,5 +7,5 @@ shift
 
 set -u
 
-echo "git checkout $DESTINATION"
-echo "git merge $SOURCE $@"
+git checkout $DESTINATION
+git merge $SOURCE $@
