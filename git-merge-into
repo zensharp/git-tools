@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+SOURCE=$(git rev-parse --abbrev-ref HEAD)
+DESTINATION=${1:-master}
+
+shift
+
+set -u
+
+echo "git checkout $DESTINATION"
+echo "git merge $SOURCE $@"
