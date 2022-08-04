@@ -3,5 +3,4 @@
 set -e
 
 git rm -r --cached .
-git add .
-git commit -m "reapply gitignore"
+git add -A
