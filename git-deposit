@@ -7,8 +7,8 @@ remote=${1}
 reposDir="${XDG_REPOS_DIR:-$HOME/repos}"
 
 path=$(git ls-remote --get-url ${remote})
-path="${path/@(git@|https:\/\/)/}"
-path="${path/\.@(com|org)[:\/]//}"
+path=$(echo $path | sed 's_git@\([0-9a-zA-Z.]+\):_\1/_g')
+path=$(echo $path | sed 's_https://\([0-9a-zA-Z.]+\)/_\1/_g')
 path="${path%.git}"
 path=$reposDir/$path
 

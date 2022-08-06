@@ -2,10 +2,7 @@
 
 set -eu
 
-url=$(git ls-remote --get-url origin)
-url="${url/https:\/\/github.com\//git@github.com:}"
-url="${url/https:\/\/gitlab.com\//git@gitlab.com:}"
-url="${url/https:\/\/bitbucket.org\//git@bitbucket.org:}"
+url=$(git url --ssh)
 
 git remote set-url origin $url
 echo "Remote url is now '$(git remote get-url origin)'"

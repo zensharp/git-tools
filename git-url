@@ -1,21 +1,43 @@
 #!/usr/bin/env bash
 
-set -eu
+set -e
+
+HTTP_MODE=true
+
+while test $# -gt 0
+do
+	case "$1" in
+		--ssh)
+				HTTP_MODE=false
+				;;
+		--http)
+				HTTP_MODE=true
+				;;
+		--*)
+				echo "Unknown option $1"
+				exit 1
+				;;
+		*)
+				;;
+	esac
+	shift
+done
 
 if $(git is)
 then
 	url=$(git ls-remote --get-url origin)
-	url="${url/git@github.com:/https:\/\/github.com\/}"
-	url="${url/git@gitlab.com:/https:\/\/gitlab.com\/}"
-	url="${url/git@bitbucket.org:/https:\/\/bitbucket.org\/}"
 	url="${url%.git}"
 else
 	url="$(pwd)"
 	url="${url/*\/repos\//}"
-	url="${url/github\//github.com\/}"
-	url="${url/gitlab\//gitlab.com\/}"
-	url="${url/bitbucket\//bitbucket.org\/}"
 	url="https://${url}"
+fi
+
+if $HTTP_MODE
+then
+	url=$(echo $url | sed 's_git@\([0-9a-zA-Z.]+\):_https://\1/_g')
+else
+	url=$(echo $url | sed 's_https://\([0-9a-zA-Z.]+\)/_git@\1:_g')
 fi
 
 echo $url
