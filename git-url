@@ -35,9 +35,9 @@ fi
 
 if $HTTP_MODE
 then
-	url=$(echo $url | sed 's_git@\([0-9a-zA-Z.]+\):_https://\1/_g')
+	url=$(echo $url | sed 's_git@\([0-9a-zA-Z.]*\):_https://\1/_g')
 else
-	url=$(echo $url | sed 's_https://\([0-9a-zA-Z.]+\)/_git@\1:_g')
+	url=$(echo $url | sed 's_https://\([0-9a-zA-Z.]*\)/_git@\1:_g')
 fi
 
 echo $url
