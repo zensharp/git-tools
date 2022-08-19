@@ -5,4 +5,6 @@ set -eu
 suffix=${1:-}
 url=$(git url)
 
+export BRANCH=$(git branch --show-current)
+
 eval "$BROWSER $url/$suffix"
