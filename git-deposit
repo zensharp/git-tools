@@ -17,3 +17,5 @@ git clone $remote $path
 GREEN='\033[0;32m'
 NC='\033[0m'
 echo -e "$GREEN$path$NC"
+
+pushd "$path"
