@@ -1,49 +1,73 @@
 #!/usr/bin/env bash
 
-set -e
-
-digit=$1
-
-if [ $digit == "init" ]
+OP=$1
+if [ "$OP" == "init" ]
 then
-	major=0
-	minor=0
-	patch=0
+	VERSION="v0.1.0"
 else
-	version=$(git tag -l --sort=-v:refname | head -n 1)
-	version="${version/v/}"
-	versionArray=(${version//./ })
-	major=${versionArray[0]}
-	minor=${versionArray[1]}
-	patch=${versionArray[2]}
+	VERSION=$(git tag -l --sort=-v:refname | head -n 1)
 fi
 
+# Parse
+REGEX='v\([[:digit:]]\+.[[:digit:]]\+.[[:digit:]]\+\)\(-pre.\([[:digit:]]\+\)\)\?'
+PREFIX=$(echo $VERSION | sed "s/$REGEX/\1/g")
+PRE=$(echo $VERSION | sed "s/$REGEX/\3/g")
+
+DIGITS=(${PREFIX//./ })
+MAJOR=${DIGITS[0]}
+MINOR=${DIGITS[1]}
+PATCH=${DIGITS[2]}
+
+# Increment
 shift
-case "$digit" in
+case "$OP" in
 	major)
-		major=$((major+1))
-		minor=0
-		patch=0
+		MAJOR=$((MAJOR+1))
+		MINOR=0
+		PATCH=0
+		PRE=0
 		;;
 	minor)
-		minor=$((minor+1))
-		patch=0
+		MINOR=$((MINOR+1))
+		PATCH=0
+		PRE=0
 		;;
 	patch)
-		patch=$((patch+1))
+		PATCH=$((PATCH+1))
+		PRE=0
+		;;
+	pre)
+		PRE=$((PRE+1))
+		;;
+	noop)
 		;;
 	init)
-		major=0
-		minor=1
-		patch=0
+		MAJOR=0
+		MINOR=1
+		PATCH=0
+		PRE=0
 		;;
 	*)
 		echo "Usage:"
-		echo "	git bump [major | minor | patch | init]"
+		echo "	git bump [major | minor | patch | pre | init]"
 		exit -1
 		;;
 esac
 
-TAG="v$major.$minor.$patch"
-eval "git tag $TAG"
-echo "Created tag '$TAG'"
+# Compute tag string
+TAG="v$MAJOR.$MINOR.$PATCH"
+if [ "$PRE" -gt 0 ]
+then
+	TAG="$TAG-pre.$PRE"
+fi
+
+# Prompt
+echo -e "Confirm create tag ${CYAN}$TAG${CLEAR}? [y|n]"
+read INPUT
+if [ "$INPUT" == "y" ]
+then
+	eval "git tag $TAG"
+	echo -e "${GREEN}Created tag '$TAG'${CLEAR}"
+else
+	echo -e "${YELLOW}Tag not created. Aborting...${CLEAR}"
+fi
