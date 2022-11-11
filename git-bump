@@ -62,12 +62,15 @@ then
 fi
 
 # Prompt
-echo -e "Confirm create tag ${CYAN}$TAG${CLEAR}? [y|n]"
-read INPUT
-if [ "$INPUT" == "y" ]
+echo -en "Confirm create tag ${CYAN}$TAG${CLEAR} [y|n]? "
+read -n 1 -r
+echo # (optional) move to a new line
+
+if [[ ! $REPLY =~ ^[Yy]$ ]]
 then
-	eval "git tag $TAG"
-	echo -e "${GREEN}Created tag '$TAG'${CLEAR}"
-else
 	echo -e "${YELLOW}Tag not created. Aborting...${CLEAR}"
+	exit
 fi
+
+eval "git tag $TAG"
+echo -e "${GREEN}Created tag '$TAG'${CLEAR}"
