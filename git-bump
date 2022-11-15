@@ -62,7 +62,7 @@ then
 fi
 
 # Prompt
-echo -en "Confirm create tag ${CYAN}$TAG${CLEAR} [y|n]? "
+echo -en "Bump from ${BLUE}$VERSION${CLEAR} to ${CYAN}$TAG${CLEAR} [y|n]? "
 read -n 1 -r
 echo # (optional) move to a new line
 
