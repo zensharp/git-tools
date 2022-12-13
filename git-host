@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+set -e
+
+URL=$(git-url --ssh)
+echo "$URL" | sed 's/git@\(.*\):.*/\1/'
