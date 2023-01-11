@@ -1,3 +1,4 @@
+
 #!/usr/bin/env bash
 
 set -e
@@ -9,9 +10,9 @@ list=""
 IFS_BACKUP=$IFS
 IFS=$'\n'
 for file in $(git ls-files -m -o --exclude-standard)
-{
+do
 	list="$list, \"$(basename $file)\""
-}
+done
 IFS="$IFS_BACKUP"
 list=${list#, }
 msg="update $list"
@@ -24,7 +25,8 @@ then
 fi
 
 # Execute
-msg="${1:-$msg}"
+TEMP="$*"
+msg=${TEMP:-msg}
 
-git add -A
-git commit -m "$msg"
+echo git add -A
+echo git commit -m "\"$msg\""
