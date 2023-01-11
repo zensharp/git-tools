@@ -1,4 +1,3 @@
-
 #!/usr/bin/env bash
 
 set -e
@@ -28,5 +27,5 @@ fi
 TEMP="$*"
 msg=${TEMP:-msg}
 
-echo git add -A
-echo git commit -m "\"$msg\""
+git add -A
+git commit -m "\"$msg\""
