@@ -24,8 +24,8 @@ then
 fi
 
 # Execute
-TEMP="$*"
-msg=${TEMP:-$msg}
+FALLBACK="$*"
+msg=${FALLBACK:-$msg}
 
 git add -A
-git commit -m "\"$msg\""
+git commit -m "$msg"
