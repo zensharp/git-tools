@@ -5,8 +5,8 @@ set -eu
 # Begin script
 oldHead=$(git branch --show-current)
 
-git fetch --prune origin master:master
-git switch master
+git fetch --prune origin main:main
+git switch main
 git feature prune
 
 git switch $oldHead 2> /dev/null || true

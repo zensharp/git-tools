@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 SOURCE=$(git rev-parse --abbrev-ref HEAD)
-DESTINATION=${1:-master}
+DESTINATION=${1:-main}
 
 shift
 

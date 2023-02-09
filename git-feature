@@ -4,7 +4,7 @@ set -eu
 
 # Configuration
 export remote="origin"
-export mainBranch="master"
+export mainBranch="main"
 export head=$(git branch --show-current)
 
 # Functions
@@ -104,7 +104,7 @@ EOL
 
 function status
 {
-	git diff --name-status $(git merge-base HEAD master)
+	git diff --name-status $(git merge-base HEAD main)
 }
 
 # Begin script

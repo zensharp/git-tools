@@ -9,7 +9,7 @@ fi
 
 set -eu
 remote="origin"
-master="master"
+master="main"
 
 function update
 {

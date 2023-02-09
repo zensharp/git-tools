@@ -28,7 +28,7 @@ Note: only GitHub, GitLab, and BitBucket remotes are supported
 *Prints all git repositories in the current directory (and all child directories)*
 
 ## Git Produce
-*Creates (or updates) a production branch from master, then pushes the branch*
+*Creates (or updates) a production branch from main, then pushes the branch*
 
 > See [GitLab Flow](https://docs.gitlab.com/ee/topics/gitlab_flow.html#production-branch-with-gitlab-flow)
 
