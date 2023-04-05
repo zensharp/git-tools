@@ -3,19 +3,21 @@
 set -e
 shopt -s extglob
 
-remote=${1}
-reposDir="${XDG_REPOS_DIR:-$HOME/repos}"
+REMOTE=$1
+REPOS_DIR="${XDG_REPOS_DIR:-$HOME/repos}"
+INDEX_PATH="$REPOS_DIR/.git-deposit"
 
-path=$(git ls-remote --get-url ${remote})
-path=$(echo $path | sed 's_git@\([0-9a-zA-Z.]*\):_\1/_g')
-path=$(echo $path | sed 's_https://\([0-9a-zA-Z.]*\)/_\1/_g')
-path="${path%.git}"
-path=$reposDir/$path
+# Begin program
+REPO_PATH=$(git ls-remote --get-url $REMOTE)
+REPO_PATH=$(echo $REPO_PATH | sed 's_git@\([0-9a-zA-Z.]*\):_\1/_g')
+REPO_PATH=$(echo $REPO_PATH | sed 's_https://\([0-9a-zA-Z.]*\)/_\1/_g')
+REPO_PATH=${REPO_PATH%.git}
+REPO_PATH=$REPOS_DIR/$REPO_PATH
 
-git clone $remote $path
+git clone $REMOTE $REPO_PATH
+echo $REPO_PATH > $INDEX_PATH
 
+# Output
 GREEN='\033[0;32m'
 NC='\033[0m'
-echo -e "$GREEN$path$NC"
-
-pushd "$path"
+echo -e "$GREEN$REPO_PATH$NC"
