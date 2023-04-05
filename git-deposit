@@ -16,8 +16,3 @@ REPO_PATH=$REPOS_DIR/$REPO_PATH
 
 git clone $REMOTE $REPO_PATH
 echo $REPO_PATH > $INDEX_PATH
-
-# Output
-GREEN='\033[0;32m'
-NC='\033[0m'
-echo -e "$GREEN$REPO_PATH$NC"
