@@ -46,7 +46,7 @@ do
 		-c|--create)
 			addArgument $(getMergeRequestDetails)
 			;;
-		-a|--merge-when-pipeline-succeeds)
+		-m|--merge-when-pipeline-succeeds)
 			addArgument "--push-option merge_request.merge_when_pipeline_succeeds"
 			;;
 		*)
