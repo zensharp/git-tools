@@ -25,11 +25,11 @@ function getMergeRequestDetails
 		name=${branch#feature-}
 		if echo $name | grep -q '^[[:digit:]]*$'
 		then
-			title="Feature #$name"
-			description="Implements #$name"
+			title="Merge request for #$name"
+			description="This MR will implement #$name."
 		else
-			title="Feature \"$name\""
-			description="Implements feature \"$name\""
+			title="Merge request for feature \"$name\""
+			description="This MR will implement feature \"$name\"."
 		fi
 		temp="$temp --push-option merge_request.title='$title'"
 		temp="$temp --push-option merge_request.description='$description'"
