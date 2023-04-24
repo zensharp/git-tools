@@ -4,15 +4,19 @@ searchRoot=${1:-.}
 
 function visit
 {
-	dir=$1
+	DIR=$1
+	REL="$(realpath .)"
+	root=""
 	
-	if [ -d "$dir/.git" ]
+	if [ -d "$DIR/.git" ]
 	then
-		realpath "$dir" --relative-to "$(realpath .)"
+		X=${DIR#REL}
+		X=${X#./}
+		echo $X
 		return 0
 	fi
 
-	for x in $dir/*
+	for x in $DIR/*
 	do
 	    if [ -d "$x" ]
 	    then
