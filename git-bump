@@ -11,6 +11,7 @@ fi
 # Parse
 REGEX='v\([[:digit:]]\+.[[:digit:]]\+.[[:digit:]]\+\)\(-pre.\([[:digit:]]\+\)\)\?'
 PREFIX=$(echo $VERSION | sed "s/$REGEX/\1/g")
+PREFIX=${PREFIX#v}
 PRE=$(echo $VERSION | sed "s/$REGEX/\3/g")
 
 DIGITS=(${PREFIX//./ })
