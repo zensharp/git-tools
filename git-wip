@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+set -e
+
+cd $(git root)
+
+MESSAGE="$*"
+
+if [ -z "$MESSAGE" ]
+then
+	MESSAGE="wip commit"
+else
+	MESSAGE="wip: $MESSAGE"
+fi
+
+echo git add -A
+echo git commit -m "$MESSAGE"
