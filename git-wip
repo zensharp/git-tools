@@ -13,5 +13,5 @@ else
 	MESSAGE="wip: $MESSAGE"
 fi
 
-echo git add -A
-echo git commit -m "$MESSAGE"
+git add -A
+git commit -m "$MESSAGE"

@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+set -e
+
+BRANCH=$(git branch --show-current)
+
+if [ -z "$1" ]
+then
+	if echo $BRANCH | grep -q '^feature-'
+	then
+		NAME=${BRANCH#feature-}
+	else
+		echo "ERROR: the feature details could not be determined"
+		echo "Usage:"
+		echo "	git-implement 22"
+		exit -1
+	fi
+else
+	NAME=$1
+fi
+
+echo $NAME
+
+echo git commit -m "'implement #$NAME'"
