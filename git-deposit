@@ -14,5 +14,5 @@ REPO_PATH=$(echo $REPO_PATH | sed 's_https://\([0-9a-zA-Z.]*\)/_\1/_g')
 REPO_PATH=${REPO_PATH%.git}
 REPO_PATH=$REPOS_DIR/$REPO_PATH
 
-git clone $REMOTE $REPO_PATH
 echo $REPO_PATH > $INDEX_PATH
+git clone $REMOTE $REPO_PATH
