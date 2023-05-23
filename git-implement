@@ -19,6 +19,4 @@ else
 	NAME=$1
 fi
 
-echo $NAME
-
-echo git commit -m "'implement #$NAME'"
+git commit -m "implement #$NAME"
