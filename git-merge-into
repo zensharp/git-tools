@@ -8,4 +8,4 @@ shift
 set -u
 
 git checkout $DESTINATION
-git merge $SOURCE $@
+git merge --no-ff $SOURCE $@
