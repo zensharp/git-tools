@@ -63,15 +63,5 @@ then
 fi
 
 # Prompt
-echo -en "Bump from ${BLUE}$VERSION${CLEAR} to ${CYAN}$TAG${CLEAR} [y|n]? "
-read -n 1 -r
-echo # (optional) move to a new line
-
-if [[ ! $REPLY =~ ^[Yy]$ ]]
-then
-	echo -e "${YELLOW}Tag not created. Aborting...${CLEAR}"
-	exit
-fi
-
 eval "git tag $TAG"
-echo -e "${GREEN}Created tag '$TAG'${CLEAR}"
+echo -e "Version bumped from ${YELLOW}$VERSION${CLEAR} to ${GREEN}$TAG${CLEAR}!"
