@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 branch=$(git branch --show-current)
-if echo $branch | grep -q '^feature-'
+if echo $branch | grep -q '^feature/'
 then
-	name=${branch#feature-}
+	name=${branch#feature/}
 	if echo $name | grep -q '^[[:digit:]]*$'
 	then
 		message="Implementing #$name"

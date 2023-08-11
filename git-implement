@@ -6,9 +6,9 @@ BRANCH=$(git branch --show-current)
 
 if [ -z "$1" ]
 then
-	if echo $BRANCH | grep -q '^feature-'
+	if echo $BRANCH | grep -q '^feature/'
 	then
-		NAME=${BRANCH#feature-}
+		NAME=${BRANCH#feature/}
 	else
 		echo "ERROR: the feature details could not be determined"
 		echo "Usage:"
