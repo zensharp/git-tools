@@ -18,6 +18,12 @@ Note: only GitHub, GitLab, and BitBucket remotes are supported
 
 > The environment variable `BROWSER` must be set.
 
+
+## Git Bump
+*Manages tags using semantic versioning*
+
+![git-bump](images/git-bump.gif)
+
 ## Git Is
 *Prints whether the current directory is in a git repository*
 

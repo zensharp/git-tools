@@ -1,11 +1,67 @@
 #!/usr/bin/env bash
 
-OP=$1
-if [ "$OP" == "init" ]
+function parseOpcode()
+{
+	case "$1" in
+		major | maj | M)
+			echo "major"
+			;;
+		minor | min | m)
+			echo "minor"
+			;;
+		patch | p)
+			echo "patch"
+			;;
+		preview | pre)
+			echo "pre"
+			;;
+		*)
+			exit 1
+			;;
+	esac
+}
+
+OPCODE_DEFAULT=minor
+
+# Begin code
+case $# in
+	0)
+		OPCODE=$OPCODE_DEFAULT
+		;;
+	1)
+		OPCODE=$(parseOpcode "$1")
+		if [ -z "$OPCODE" ]
+		then
+			OPCODE="$OPCODE_DEFAULT"
+			ID="$1"
+		fi
+		;;
+	2)
+		ID="$1"
+		OPCODE=$(parseOpcode "$2")
+		;;
+esac
+
+if [ -z "$ID" ]
 then
-	VERSION="v0.1.0"
+	TAG_PREFIX=""
 else
-	VERSION=$(git tag -l --sort=-v:refname | head -n 1)
+	TAG_PREFIX="$ID/"
+fi
+
+VERSION_RAW=$(git tag --list "${TAG_PREFIX}v*" --sort=-v:refname | head -n 1)
+VERSION=${VERSION_RAW##*/}
+
+if [ -z "$VERSION" ]
+then
+	case "$OPCODE" in
+		patch | pre)
+			VERSION=v0.1.0
+			;;
+		*)
+			VERSION=v0.0.0
+			;;
+	esac
 fi
 
 # Parse
@@ -20,8 +76,7 @@ MINOR=${DIGITS[1]}
 PATCH=${DIGITS[2]}
 
 # Increment
-shift
-case "$OP" in
+case "$OPCODE" in
 	major)
 		MAJOR=$((MAJOR+1))
 		MINOR=0
@@ -42,21 +97,15 @@ case "$OP" in
 		;;
 	noop)
 		;;
-	init)
-		MAJOR=0
-		MINOR=1
-		PATCH=0
-		PRE=0
-		;;
 	*)
 		echo "Usage:"
-		echo "	git bump [major | minor | patch | pre | init]"
+		echo "	git bump [<prefix>] [major | minor | patch | pre]"
 		exit -1
 		;;
 esac
 
 # Compute tag string
-TAG="v$MAJOR.$MINOR.$PATCH"
+TAG="${TAG_PREFIX}v$MAJOR.$MINOR.$PATCH"
 if [ "$PRE" -gt 0 ]
 then
 	TAG="$TAG-pre.$PRE"
@@ -64,4 +113,9 @@ fi
 
 # Prompt
 eval "git tag $TAG"
-echo -e "Version bumped from ${YELLOW}$VERSION${CLEAR} to ${GREEN}$TAG${CLEAR}!"
+if [ -z "$VERSION_RAW" ]
+then
+	echo -e "Version initialized to ${GREEN}$TAG${CLEAR}!"
+else
+	echo -e "Version bumped from ${YELLOW}$VERSION_RAW${CLEAR} to ${GREEN}$TAG${CLEAR}!"
+fi
