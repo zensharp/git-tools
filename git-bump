@@ -3,13 +3,13 @@
 function parseOpcode()
 {
 	case "$1" in
-		major | maj | M)
+		major | maj | M | x)
 			echo "major"
 			;;
-		minor | min | m)
+		minor | min | m | y)
 			echo "minor"
 			;;
-		patch | p)
+		patch | p | z)
 			echo "patch"
 			;;
 		preview | pre)
@@ -55,8 +55,8 @@ VERSION=${VERSION_RAW##*/}
 if [ -z "$VERSION" ]
 then
 	case "$OPCODE" in
-		patch | pre)
-			VERSION=v0.1.0
+		pre)
+			VERSION=v0.0.1
 			;;
 		*)
 			VERSION=v0.0.0
