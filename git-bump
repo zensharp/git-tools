@@ -115,7 +115,7 @@ fi
 eval "git tag $TAG"
 if [ -z "$VERSION_RAW" ]
 then
-	echo -e "Version initialized to ${GREEN}$TAG${CLEAR}!"
+	printf "Version initialized to ${GREEN}$TAG${CLEAR}!\n"
 else
-	echo -e "Version bumped from ${YELLOW}$VERSION_RAW${CLEAR} to ${GREEN}$TAG${CLEAR}!"
+	printf "Version bumped from ${YELLOW}$VERSION_RAW${CLEAR} to ${GREEN}$TAG${CLEAR}!\n"
 fi
