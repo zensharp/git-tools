@@ -8,7 +8,7 @@ MESSAGE="$*"
 
 if [ -z "$MESSAGE" ]
 then
-	MESSAGE="wip commit"
+	MESSAGE="wip: wip commit"
 else
 	MESSAGE="wip: $MESSAGE"
 fi
