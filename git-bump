@@ -93,6 +93,9 @@ case "$OPCODE" in
 		PRE=0
 		;;
 	pre)
+		if [ -z "$PRE" ]; then
+			PATCH=$((PATCH+1))
+		fi
 		PRE=$((PRE+1))
 		;;
 	noop)
@@ -111,7 +114,7 @@ then
 	TAG="$TAG-pre.$PRE"
 fi
 
-# Prompt
+# Print
 eval "git tag $TAG"
 if [ -z "$VERSION_RAW" ]
 then
