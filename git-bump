@@ -12,7 +12,7 @@ function parseOpcode()
 		patch | p | z)
 			echo "patch"
 			;;
-		preview | pre)
+		pre)
 			echo "pre"
 			;;
 		*)
@@ -21,37 +21,53 @@ function parseOpcode()
 	esac
 }
 
-OPCODE_DEFAULT=minor
-
 # Begin code
-case $# in
+OPCODE_DEFAULT=minor
+ARG_ARRAY=()
+for ARG in "$@"; do
+	case "$ARG" in
+		--prerelease | --pre)
+			MODE="pre"
+			;;
+		--release)
+			MODE="release"
+			;;
+		*)
+			ARG_ARRAY+=("$ARG")
+			;;
+	esac
+done
+ARG_0="${ARG_ARRAY[0]}"
+ARG_1="${ARG_ARRAY[1]}"
+ARG_2="${ARG_ARRAY[2]}"
+
+case ${#ARG_ARRAY[@]} in
 	0)
 		OPCODE=$OPCODE_DEFAULT
 		;;
 	1)
-		OPCODE=$(parseOpcode "$1")
+		OPCODE=$(parseOpcode "$ARG_0")
 		if [ -z "$OPCODE" ]
 		then
 			OPCODE="$OPCODE_DEFAULT"
-			ID="$1"
+			ID="$ARG_0"
 		fi
 		;;
 	2)
-		ID="$1"
-		OPCODE=$(parseOpcode "$2")
+		ID="$ARG_0"
+		OPCODE=$(parseOpcode "$ARG_1")
 		;;
 esac
-
+# Compute prefix
 if [ -z "$ID" ]
 then
 	TAG_PREFIX=""
 else
 	TAG_PREFIX="$ID/"
 fi
-
+# Read current version
 VERSION_RAW=$(git tag --list "${TAG_PREFIX}v*" --sort=-v:refname | head -n 1)
 VERSION=${VERSION_RAW##*/}
-
 if [ -z "$VERSION" ]
 then
 	case "$OPCODE" in
@@ -63,18 +79,22 @@ then
 			;;
 	esac
 fi
-
 # Parse
 REGEX='v\([[:digit:]]\+.[[:digit:]]\+.[[:digit:]]\+\)\(-pre.\([[:digit:]]\+\)\)\?'
 PREFIX=$(echo $VERSION | sed "s/$REGEX/\1/g")
 PREFIX=${PREFIX#v}
 PRE=$(echo $VERSION | sed "s/$REGEX/\3/g")
-
 DIGITS=(${PREFIX//./ })
 MAJOR=${DIGITS[0]}
 MINOR=${DIGITS[1]}
 PATCH=${DIGITS[2]}
-
+# Handle suffix
+case "$MODE" in
+	release)
+		PRE=0
+		OPCODE="noop"
+		;;
+esac
 # Increment
 case "$OPCODE" in
 	major)
@@ -94,7 +114,8 @@ case "$OPCODE" in
 		;;
 	pre)
 		if [ -z "$PRE" ]; then
-			PATCH=$((PATCH+1))
+			echo "You are not in a prerelease state. Run 'git-bump <opcode> --prerelease' first.";
+			exit 1
 		fi
 		PRE=$((PRE+1))
 		;;
@@ -102,19 +123,23 @@ case "$OPCODE" in
 		;;
 	*)
 		echo "Usage:"
-		echo "	git bump [<prefix>] [major | minor | patch | pre]"
-		exit -1
+		echo "	git bump [<prefix>] [major | minor | patch | pre] [--prelease | --release]"
+		exit 1
+		;;
+esac
+case "$MODE" in
+	pre)
+		PRE=1
 		;;
 esac
 
-# Compute tag string
+# Compute version string
 TAG="${TAG_PREFIX}v$MAJOR.$MINOR.$PATCH"
 if [ "$PRE" -gt 0 ]
 then
 	TAG="$TAG-pre.$PRE"
 fi
-
-# Print
+# Execute and print
 eval "git tag $TAG"
 if [ -z "$VERSION_RAW" ]
 then
