@@ -1,5 +1,17 @@
 #!/usr/bin/env bash
 
-version=$(git tag -l --sort=-v:refname | head -n 1)
-version=${version/v/}
-echo "v$version"
+ID=$1
+# Compute prefix
+if [ -z "$ID" ]
+then
+	TAG_PREFIX=""
+else
+	TAG_PREFIX="$ID/"
+fi
+# Read tags
+VERSION=$(git tag --list "${TAG_PREFIX}v*" --sort=-v:refname | head -n 1)
+if [ -z "$VERSION" ]; then
+	exit 1
+else
+	echo "$VERSION"
+fi
