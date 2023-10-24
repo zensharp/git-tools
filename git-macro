@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+case "$1" in
+	s)
+		git status 
+		;;
+	cc)
+		git commit -m 'code quality'
+		;;
+	*)
+		echo "Invalid verb '$verb'"
+		exit 1
+		;;
+esac
+
