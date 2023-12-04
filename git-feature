@@ -39,9 +39,9 @@ export -f deleteBranch
 function parseFeatureName
 {
 	name=$1
-	if echo $name | grep -q '^feature/'
+	if echo $name | grep -q '^feature-'
 	then
-		name=${name#feature/}
+		name=${name#feature-}
 		if echo $name | grep -q '^[[:digit:]]*$'
 		then
 			name="#$name"
@@ -58,19 +58,19 @@ export -f parseFeatureName
 function start
 {
 	name=$1
-	switchBranch "feature/$name"
+	switchBranch "feature-$name"
 }
 
 function drop
 {
 	name=$1
-	deleteBranch "feature/$name"
+	deleteBranch "feature-$name"
 }
 
 function prune
 {
 	git branch --format='%(refname:short)' --merged $remote/$mainBranch |
-		grep "^feature/" |
+		grep "^feature-" |
 		xargs -I {} bash -c "deleteBranch '{}'"
 }
 
