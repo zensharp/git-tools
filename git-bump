@@ -22,7 +22,6 @@ function parseOpcode()
 }
 
 # Begin code
-OPCODE_DEFAULT=minor
 ARG_ARRAY=()
 for ARG in "$@"; do
 	case "$ARG" in
@@ -43,7 +42,6 @@ ARG_2="${ARG_ARRAY[2]}"
 
 case ${#ARG_ARRAY[@]} in
 	0)
-		OPCODE=$OPCODE_DEFAULT
 		;;
 	1)
 		OPCODE=$(parseOpcode "$ARG_0")
@@ -58,6 +56,7 @@ case ${#ARG_ARRAY[@]} in
 		OPCODE=$(parseOpcode "$ARG_1")
 		;;
 esac
+
 # Compute prefix
 if [ -z "$ID" ]
 then
@@ -66,7 +65,7 @@ else
 	TAG_PREFIX="$ID/"
 fi
 # Read current version
-VERSION_RAW=$(git tag --list "${TAG_PREFIX}v*" --sort=-v:refname | head -n 1)
+VERSION_RAW=$(git-latest $ID)
 VERSION=${VERSION_RAW##*/}
 if [ -z "$VERSION" ]
 then
@@ -88,13 +87,28 @@ DIGITS=(${PREFIX//./ })
 MAJOR=${DIGITS[0]}
 MINOR=${DIGITS[1]}
 PATCH=${DIGITS[2]}
-# Handle suffix
-case "$MODE" in
-	release)
-		PRE=0
-		OPCODE="noop"
-		;;
-esac
+
+if [ -n "$DEBUG" ]; then
+	echo "Major: $MAJOR"
+	echo "Minor: $MINOR"
+	echo "Patch: $PATCH"
+	echo "  Pre: $PRE"
+	echo "Opcode is: $OPCODE"
+	if [ -z "$OPCODE" ]; then
+		if [ -n "$PRE" ]; then
+			OPCODE="pre"
+		else
+			OPCODE="patch"
+		fi
+	fi
+	case "$MODE" in
+		release)
+			OPCODE="release"
+			;;
+	esac
+	echo "Virtual opcode is: $OPCODE"
+fi
+
 # Increment
 case "$OPCODE" in
 	major)
@@ -119,11 +133,18 @@ case "$OPCODE" in
 		fi
 		PRE=$((PRE+1))
 		;;
+	release)
+		if [ -z "$PRE" ]; then
+			echo "You are not in a prerelease state. Cannot release.";
+			exit 1
+		fi
+		PRE=0
+		;;
 	noop)
 		;;
 	*)
 		echo "Usage:"
-		echo "	git bump [<prefix>] [major | minor | patch | pre] [--prelease | --release]"
+		echo "	git bump [<prefix>] [major | minor | patch] [--prelease | --release]"
 		exit 1
 		;;
 esac
@@ -140,7 +161,11 @@ then
 	TAG="$TAG-pre.$PRE"
 fi
 # Execute and print
-eval "git tag $TAG"
+if [ -z "$DRY_RUN" ]
+then
+	eval "git tag $TAG"
+fi
+
 if [ -z "$VERSION_RAW" ]
 then
 	printf "Version initialized to ${GREEN}$TAG${CLEAR}!\n"
