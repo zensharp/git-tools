@@ -12,10 +12,7 @@ function parseOpcode()
 		patch | p | z)
 			echo "patch"
 			;;
-		pre)
-			echo "pre"
-			;;
-		release)
+		pre | release)
 			echo "INVALID"
 			;;
 		*)
@@ -133,7 +130,7 @@ case "$OPCODE" in
 		;;
 	pre)
 		if [ -z "$PRE" ]; then
-			echo "You are not in a prerelease state. Run 'git-bump <opcode> --prerelease' first.";
+			echo "You are not in a prerelease state. Run 'git-bump <opcode> --pre' first.";
 			exit 1
 		fi
 		PRE=$((PRE+1))
@@ -149,8 +146,8 @@ case "$OPCODE" in
 		;;
 	*)
 		echo "Usage:"
-		echo "	git bump (major | minor | patch) [--prelease | --release]"
-		echo "	git bump <prefix> (major | minor | patch) [--prelease | --release]"
+		echo "	git bump (major | minor | patch) [--pre | --release]"
+		echo "	git bump <prefix> (major | minor | patch) [--pre | --release]"
 		echo ""
 		echo "Hint:"
 		echo "	major = maj, M, x"
