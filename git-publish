@@ -46,6 +46,13 @@ do
 		-c|--create)
 			addArgument $(getMergeRequestDetails)
 			;;
+		-d|--draft)
+			addArgument "--push-option merge_request.draft"
+			;;
+		-cd|-dc)
+			addArgument $(getMergeRequestDetails)
+			addArgument "--push-option merge_request.draft"
+			;;
 		-m|--merge-when-pipeline-succeeds)
 			addArgument "--push-option merge_request.merge_when_pipeline_succeeds"
 			;;
