@@ -19,7 +19,7 @@ function getMergeRequestDetails
 		exit 1
 	fi
 
-	temp="--push-option merge_request.create"
+	temp="--push-option merge_request.create --push-option merge_request.squash"
 	if echo $branch | grep -q '^feature-'
 	then
 		name=${branch#feature-}
