@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+echo -e "\u001b[?1049h\u001b[H"
+
+clear
+echo "==== Git Submodule Shell ===="
+echo "You are in a shell in $(basename -- $PWD)..."
+echo "============================="
+
+$SHELL
+
+echo -e "\u001b[?1049l"

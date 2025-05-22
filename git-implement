@@ -12,11 +12,11 @@ then
 	else
 		echo "ERROR: the feature details could not be determined"
 		echo "Usage:"
-		echo "	git-close 22"
+		echo "	git-implement 22"
 		exit -1
 	fi
 else
 	NAME=$1
 fi
 
-git commit -m "implement #$NAME"
+git commit -m "implementing #$NAME"
