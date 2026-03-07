@@ -4,7 +4,7 @@ echo -e "\u001b[?1049h\u001b[H"
 
 clear
 echo "==== Git Submodule Shell ===="
-echo "You are in a shell in $(basename -- $PWD)..."
+printf "You are in a shell in ${CYAN}$(basename -- $PWD)${CLEAR}...\n"
 echo "============================="
 
 $SHELL
